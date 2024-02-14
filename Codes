@@ -1,1 +1,75 @@
+class FlightBookingSystem:
+    def __init__(self):
+        # Initializing the FlightBookingSystem class with an empty dictionary to store flights
+        self.flights = {}
+
+    def add_flight(self, flight_number, destination, departure_time, total_seats):
+        # Method to add a new flight to the system
+        self.flights[flight_number] = {
+            'destination': destination,
+            'departure_time': departure_time,
+            'total_seats': total_seats,
+            'booked_seats': []  # Initializing an empty list to store booked seats for this flight
+        }
+
+    def book_seat(self, flight_number, passenger_name):
+        # Method to book a seat on a flight
+        if flight_number not in self.flights:  # Checking if the flight exists
+            print("Flight not found.")
+            return False
+
+        flight = self.flights[flight_number]
+        if len(flight['booked_seats']) >= flight['total_seats']:  # Checking if there are available seats
+            print("No available seats on this flight.")
+            return False
+
+        flight['booked_seats'].append(passenger_name)  # Booking the seat
+        print(f"Seat booked successfully for {passenger_name} on flight {flight_number}.")
+        return True
+
+    def check_availability(self, flight_number):
+        # Method to check the availability of seats on a flight
+        if flight_number not in self.flights:  # Checking if the flight exists
+            print("Flight not found.")
+            return False
+
+        flight = self.flights[flight_number]
+        available_seats = flight['total_seats'] - len(flight['booked_seats'])  # Calculating available seats
+        print(f"Available seats on flight {flight_number}: {available_seats}")
+        return available_seats
+
+    def display_manifest(self, flight_number):
+        # Method to display the passenger manifest for a flight
+        if flight_number not in self.flights:  # Checking if the flight exists
+            print("Flight not found.")
+            return False
+
+        flight = self.flights[flight_number]
+        print(f"Passenger Manifest for flight {flight_number}:")
+        for seat, passenger in enumerate(flight['booked_seats'], start=1):
+            print(f"Seat {seat}: {passenger}")  # Printing seat number and passenger name
+        return True
+
+def main():
+    booking_system = FlightBookingSystem()  # Creating an instance of the FlightBookingSystem class
+
+    # Adding flights
+    booking_system.add_flight("FL001", "New York", "12:00", 100)
+    booking_system.add_flight("FL002", "Los Angeles", "14:00", 150)
+
+    # Booking seats
+    booking_system.book_seat("FL001", "Alice")
+    booking_system.book_seat("FL001", "Bob")
+    booking_system.book_seat("FL002", "Charlie")
+
+    # Checking availability
+    booking_system.check_availability("FL001")
+    booking_system.check_availability("FL002")
+
+    # Displaying passenger manifests
+    booking_system.display_manifest("FL001")
+    booking_system.display_manifest("FL002")
+
+if __name__ == "__main__":
+    main()  # Calling the main function if the script is executed directly
 
